@@ -1,15 +1,19 @@
+import { useEffect, useState } from "react";
 import PostCard from "./PostCard";
 
-function PostList({ posts }) {
+function PostList() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((r) => r.json())
+      .then((data) => setPosts(data.slice(0, 20)));
+  }, []);
+
   return (
     <div>
-      <h2>โพสต์ล่าสุด</h2>
-      {posts.map((post) => (
-        <PostCard
-          key={post.id}
-          title={post.title}
-          body={post.body}
-        />
+      {posts.map((p) => (
+        <PostCard key={p.id} post={p} />
       ))}
     </div>
   );
